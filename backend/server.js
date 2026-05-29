@@ -247,24 +247,33 @@ dotenv.config();
 
 const app = express();
 
-// CORS configuration - Allow multiple origins
+// CORS configuration - Allow multiple origins with trailing slash normalization
 const allowedOrigins = [
   'https://task-manager-app-154s.onrender.com',  // Your Render frontend
   process.env.FRONTEND_URL,                      // Dynamic URL from environment
   'http://localhost:5173',                       // Local development (Vite default)
   'http://localhost:3000'                        // Alternative local port
-].filter(Boolean); // Remove undefined values
+].filter(Boolean).map(url => url.replace(/\/$/, '')); // Strip trailing slashes
 
-// CORS middleware - Simplified for Express 5 compatibility
-app.use(cors({
-  origin: allowedOrigins,
-  credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
-  exposedHeaders: ['Content-Range', 'X-Content-Range']
-}));
-
-// REMOVED the problematic line: app.options('*', cors());
+// Custom CORS middleware to guarantee preflight OPTIONS requests are handled with 200 OK
+app.use((req, res, next) => {
+  const origin = req.headers.origin;
+  
+  if (origin && allowedOrigins.includes(origin.replace(/\/$/, ''))) {
+    res.setHeader('Access-Control-Allow-Origin', origin);
+  }
+  
+  res.setHeader('Access-Control-Allow-Credentials', 'true');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With');
+  
+  // Handle preflight OPTIONS request immediately
+  if (req.method === 'OPTIONS') {
+    return res.status(200).end();
+  }
+  
+  next();
+});
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
