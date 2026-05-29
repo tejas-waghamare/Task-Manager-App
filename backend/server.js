@@ -249,10 +249,10 @@ const app = express();
 
 // CORS configuration - Allow multiple origins
 const allowedOrigins = [
+  'https://task-manager-app-154s.onrender.com',  // Your Render frontend
   'http://localhost:5173',           // Local development (Vite default)
   'http://localhost:3000',           // Alternative local port
-  'https://task-manager-app-154s.onrender.com',  // Your Render frontend
-  process.env.FRONTEND_URL,          // Optional: Set in Render dashboard
+  
 ].filter(Boolean); // Remove undefined values
 
 // CORS middleware - Simplified for Express 5 compatibility
