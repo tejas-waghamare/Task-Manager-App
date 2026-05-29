@@ -251,7 +251,8 @@ const app = express();
 const allowedOrigins = [
   'https://task-manager-app-154s.onrender.com',  // Your Render frontend
   'http://localhost:5173',           // Local development (Vite default)
-  'http://localhost:3000',           // Alternative local port
+  'http://localhost:3000', 
+  'http://localhost:5173/login'          // Alternative local port
   
 ].filter(Boolean); // Remove undefined values
 
