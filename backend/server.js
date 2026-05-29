@@ -250,28 +250,14 @@ const app = express();
 // CORS configuration - Allow multiple origins
 const allowedOrigins = [
   'https://task-manager-app-154s.onrender.com',  // Your Render frontend
-  'http://localhost:5173',           // Local development (Vite default)
-  'http://localhost:3000', 
-  'http://localhost:5173/login'          // Alternative local port
-  
+  process.env.FRONTEND_URL,                      // Dynamic URL from environment
+  'http://localhost:5173',                       // Local development (Vite default)
+  'http://localhost:3000'                        // Alternative local port
 ].filter(Boolean); // Remove undefined values
 
 // CORS middleware - Simplified for Express 5 compatibility
 app.use(cors({
-  origin: function(origin, callback) {
-    // Allow requests with no origin (like mobile apps, curl, postman)
-    if (!origin) return callback(null, true);
-    
-    // Check if origin is allowed
-    if (allowedOrigins.indexOf(origin) !== -1) {
-      return callback(null, true);
-    }
-    
-    // For development, log rejected origins
-    console.log(`CORS request rejected from origin: ${origin}`);
-    const msg = 'CORS policy does not allow access from this origin.';
-    return callback(new Error(msg), false);
-  },
+  origin: allowedOrigins,
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
