@@ -63,7 +63,7 @@ const app = express();
 const allowedOrigins = [
   'http://localhost:5173',           // Local development
   'http://localhost:3000',           // Alternative local port
-  process.env.FRONTEND_URL,          // Your Render frontend URL (set in env)
+  process.env.FRONTEND_URL='https://task-manager-app-154s.onrender.com',          // Your Render frontend URL (set in env)
 ].filter(Boolean); // Remove undefined values
 
 app.use(cors({
