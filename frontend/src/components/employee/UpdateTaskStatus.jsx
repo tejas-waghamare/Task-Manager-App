@@ -50,7 +50,7 @@ const UpdateTaskStatus = ({ task, onUpdate }) => {
       <button
         onClick={handleUpdate}
         disabled={updating || status === task.status}
-        className="px-3 py-1 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition text-sm disabled:opacity-50"
+        className="px-3 py-1 bg-blue-600 text-white cursor-pointer rounded-lg hover:bg-blue-700 transition text-sm disabled:opacity-50"
       >
         {updating ? (
           <i className="fas fa-spinner fa-spin"></i>
