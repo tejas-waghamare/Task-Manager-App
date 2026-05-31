@@ -22,9 +22,6 @@ A full-stack web application designed for organization-level task delegation, pr
 - **Framework:** Express v5
 - **Database:** MongoDB Atlas (Mongoose ODM)
 - **Authentication:** JSON Web Tokens (JWT) & bcryptjs
-- **File Upload:** Multer
-- **CSV Export:** json2csv
-- **Validation:** Express Validator
 
 ---
 
@@ -38,34 +35,31 @@ A full-stack web application designed for organization-level task delegation, pr
 
 ### 📋 Manager Workspace
 - **Dashboard Overview:** Displays high-level analytics including total tasks, pending vs completed tasks, active employees, and daily report submission rates
-- **Employee Management:** Complete table view of all employees with sortable columns, search functionality, and detailed individual analytics
+- **Employee Management:** Complete Card view of all employees with Info, search functionality, and detailed individual analytics
 - **Task Delegation:** Create, view, update, and delete tasks for specific employees with custom descriptions and due dates
-- **Report Verification:** View and review daily reports submitted by employees with attachment download support
-- **Export Reports:** Export all employee reports to CSV format for offline analysis
+- **Report Verification:** View and review daily reports submitted by employees
 
 ### 💻 Employee Workspace
 - **Dashboard Summary:** Clean visualization of personal task completion metrics
 - **My Tasks:** Interactively view assigned tasks with manager name display, update status values (Pending, In Progress, Review, Completed)
-- **Daily Reports:** Submit structured daily activity logs with work summary, blockers, and file attachments (images, PDFs, documents)
+- **Daily Reports:** Submit structured daily activity logs with work summary and blockers
 - **Report History:** View all submitted reports with date-wise filtering
 
 ### 🌟 Bonus Features Implemented
 - ✅ **Search & Filters** - Search tasks/reports by title, description, or employee name
 - ✅ **Pagination** - Efficient data loading for task lists
-- ✅ **File Upload** - Upload multiple attachments with daily reports (up to 5 files, 5MB each)
-- ✅ **Export Reports** - Export employee reports to CSV format
-- ✅ **Employee Table View** - Sortable table with employee statistics and progress bars
 - ✅ **Manager Assignment Display** - Employees can see who assigned each task
 - ✅ **Responsive Design** - Fully responsive UI that works on all device sizes
 - ✅ **Modern UI** - Beautiful gradient designs with smooth animations
 
 ---
-
 ## 👥 Demo Credentials
 
-| Role | Email | Password |
-|------|-------|----------|
-| **Manager** | `manager@example.com` | `123456` | -- Manager ABC
-| **Employee** | `tejaswaghamare121@gmail.com` | `123456` | -- Tejas Devidas Waghamare
+| Role | Email | Password | Name |
+|------|-------|----------|------|
+| **Manager** | `manager@example.com` | `123456` | Manager ABC |
+| **Employee** | `tejaswaghamare121@gmail.com` | `123456` | Tejas Devidas Waghamare |
 
----
+> 💡 **Note:** Use these credentials to log in and test the application. The Manager has access to all management features, while the Employee can view assigned tasks and submit daily reports.
+
+> ⚠️ **Important:** The live demo uses a free Render instance. The backend may take 20-30 seconds to wake up on first request. Please wait a moment after login.
