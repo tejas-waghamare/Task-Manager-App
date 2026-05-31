@@ -45,18 +45,18 @@ const Signup = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 flex items-center justify-center px-4 py-8">
+    <div className="min-h-screen bg-gradient-to-br from-teal-200 via-pink-200 to-purple-200 flex items-center justify-center px-4 py-8">
       <div className="max-w-md w-full">
-        <div className="bg-white rounded-2xl shadow-xl p-8">
-          <div className="text-center mb-8">
+        <div className="bg-white/30 backdrop-blur-sm rounded-2xl shadow-2xl p-6">
+          <div className="text-center mb-4 flex">
             <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
               <i className="fas fa-user-plus text-3xl text-green-600"></i>
             </div>
-            <h2 className="text-3xl font-bold text-gray-800">Create Account</h2>
-            <p className="text-gray-500 mt-2">Join TaskManager today</p>
+            
+            <p className="text-gray-500 mt-2"> <span><h2 className="text-4xl font-bold text-gray-800">Create Account</h2></span> Join TaskManager today</p>
           </div>
 
-          <form onSubmit={handleSubmit} className="space-y-5">
+          <form onSubmit={handleSubmit} className="space-y-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Full Name
@@ -71,7 +71,7 @@ const Signup = () => {
                   value={formData.name}
                   onChange={handleChange}
                   className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  placeholder="John Doe"
+                  placeholder="Enter Your Name"
                   required
                 />
               </div>
@@ -91,7 +91,7 @@ const Signup = () => {
                   value={formData.email}
                   onChange={handleChange}
                   className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  placeholder="you@example.com"
+                  placeholder="Enter Your Email"
                   required
                 />
               </div>
@@ -111,7 +111,7 @@ const Signup = () => {
                   value={formData.password}
                   onChange={handleChange}
                   className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  placeholder="••••••••"
+                  placeholder="Enter 6-Digit Password"
                   required
                 />
               </div>
@@ -131,7 +131,7 @@ const Signup = () => {
                   value={formData.confirmPassword}
                   onChange={handleChange}
                   className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  placeholder="••••••••"
+                  placeholder="Re-enter Password"
                   required
                 />
               </div>
@@ -149,7 +149,7 @@ const Signup = () => {
                   name="role"
                   value={formData.role}
                   onChange={handleChange}
-                  className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="block w-full pl-10 pr-3  cursor-pointer py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 >
                   <option value="employee">Employee</option>
                   <option value="manager">Manager</option>
@@ -160,10 +160,10 @@ const Signup = () => {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-gradient-to-r from-green-600 to-green-700 text-white py-2 px-4 rounded-lg hover:from-green-700 hover:to-green-800 transition duration-200 font-medium shadow-md disabled:opacity-50"
+              className="w-full cursor-pointer bg-gradient-to-r from-green-600 to-green-700 text-white py-2 px-4 rounded-lg hover:from-green-400 hover:to-green-900 transition duration-200 font-medium shadow-md disabled:opacity-50"
             >
               {loading ? (
-                <span className="flex items-center justify-center">
+                <span className="flex items-center  justify-center">
                   <svg className="animate-spin h-5 w-5 mr-2 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                     <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                     <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
@@ -180,7 +180,7 @@ const Signup = () => {
             Already have an account?{' '}
             <button
               onClick={() => navigate('/login')}
-              className="text-blue-600 hover:text-blue-700 font-medium"
+              className="text-blue-600 cursor-pointer hover:text-red-700 font-medium"
             >
               Sign in
             </button>

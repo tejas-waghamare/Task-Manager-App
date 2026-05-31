@@ -26,9 +26,9 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 flex items-center justify-center px-4">
+    <div className="min-h-screen bg-gradient-to-br from-teal-200 via-pink-200 to-purple-200 flex items-center justify-center px-4">
       <div className="max-w-md w-full">
-        <div className="bg-white rounded-2xl shadow-xl p-8">
+        <div className="bg-white/30 backdrop-blur-sm rounded-2xl shadow-2xl p-8">
           <div className="text-center mb-8">
             <div className="w-20 h-20 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
               <i className="fas fa-tasks text-3xl text-blue-600"></i>
@@ -39,7 +39,7 @@ const Login = () => {
 
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium  text-gray-700 mb-2">
                 Email Address
               </label>
               <div className="relative">
@@ -51,7 +51,7 @@ const Login = () => {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  placeholder="you@example.com"
+                  placeholder="Enter Registered Email"
                   required
                 />
               </div>
@@ -70,7 +70,7 @@ const Login = () => {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   className="block w-full pl-10 pr-10 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  placeholder="••••••••"
+                  placeholder="Enter your password"
                   required
                 />
                 <button
@@ -78,7 +78,7 @@ const Login = () => {
                   onClick={() => setShowPassword(!showPassword)}
                   className="absolute inset-y-0 right-0 pr-3 flex items-center"
                 >
-                  <i className={`fas ${showPassword ? 'fa-eye-slash' : 'fa-eye'} text-gray-400 hover:text-gray-600`}></i>
+                  <i className={`fas ${showPassword ? 'fa-eye-slash' : 'fa-eye'} cursor-pointer text-gray-400 hover:text-gray-600`}></i>
                 </button>
               </div>
             </div>
@@ -86,7 +86,7 @@ const Login = () => {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-gradient-to-r from-blue-600 to-blue-700 text-white py-2 px-4 rounded-lg hover:from-blue-700 hover:to-blue-800 transition duration-200 font-medium shadow-md disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full cursor-pointer bg-gradient-to-r from-blue-600 to-blue-700 text-white py-2 px-4 rounded-lg hover:from-blue-700 hover:to-blue-800 transition duration-200 font-medium shadow-md disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {loading ? (
                 <span className="flex items-center justify-center">
@@ -108,7 +108,7 @@ const Login = () => {
             Don't have an account?{' '}
             <button
               onClick={() => navigate('/signup')}
-              className="text-blue-600 hover:text-blue-700 font-medium"
+              className="text-blue-600 hover:text-red-700 cursor-pointer font-medium"
             >
               Sign up
             </button>

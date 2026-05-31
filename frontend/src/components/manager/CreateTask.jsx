@@ -250,23 +250,7 @@ const CreateTask = () => {
           </p>
         </div>
 
-        {/* Quick Tips */}
-        <div className="bg-blue-50 rounded-xl p-4 border border-blue-100">
-          <div className="flex items-start space-x-3">
-            <svg className="w-5 h-5 text-blue-600 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-            <div className="text-sm text-blue-800">
-              <p className="font-medium mb-1">💡 Tips for creating effective tasks:</p>
-              <ul className="text-xs space-y-1 text-blue-700">
-                <li>• Be specific and clear about the task requirements</li>
-                <li>• Set realistic deadlines considering task complexity</li>
-                <li>• Include acceptance criteria for better clarity</li>
-                <li>• Add relevant resources or links in description</li>
-              </ul>
-            </div>
-          </div>
-        </div>
+       
 
         {/* Form Actions */}
         <div className="flex gap-3 pt-4">
@@ -288,7 +272,7 @@ const CreateTask = () => {
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
                 </svg>
-                <span>Create Task</span>
+                <span>Assign Task</span>
               </div>
             )}
           </button>

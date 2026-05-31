@@ -5,6 +5,7 @@ import Navbar from '../components/common/Navbar';
 import CreateTask from '../components/manager/CreateTask';
 import TaskList from '../components/manager/TaskList';
 import EmployeeReports from '../components/manager/EmployeeReports';
+import EmployeeList from '../components/manager/EmployeeList';
 
 const ManagerDashboard = () => {
   const { user } = useAuth();
@@ -62,11 +63,10 @@ const ManagerDashboard = () => {
   const TabButton = ({ id, label, icon }) => (
     <button
       onClick={() => setActiveTab(id)}
-      className={`group flex items-center space-x-2 py-2.5 px-4 cursor-pointer rounded-xl transition-all duration-200 ${
-        activeTab === id
+      className={`group flex items-center space-x-2 py-2.5 px-4 cursor-pointer rounded-xl transition-all duration-200 ${activeTab === id
           ? 'bg-blue-50 text-blue-600 shadow-sm'
           : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50'
-      } font-medium`}
+        } font-medium`}
     >
       <i className={`${icon} text-lg ${activeTab === id ? 'text-blue-600' : 'text-gray-400 group-hover:text-gray-500'}`}></i>
       <span>{label}</span>
@@ -114,6 +114,7 @@ const ManagerDashboard = () => {
             <TabButton id="create-task" label="Create Task" icon="fas fa-plus-circle" />
             <TabButton id="tasks" label="All Tasks" icon="fas fa-list-check" />
             <TabButton id="reports" label="Employee Reports" icon="fas fa-file-alt" />
+            <TabButton id="employees" label="Employees" icon="fas fa-users" />
           </div>
         </div>
 
@@ -123,50 +124,50 @@ const ManagerDashboard = () => {
             <>
               {/* Stats Grid */}
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-                <StatCard 
-                  title="Total Employees" 
-                  value={isLoading ? "..." : stats.totalEmployees} 
-                  color="purple" 
+                <StatCard
+                  title="Total Employees"
+                  value={isLoading ? "..." : stats.totalEmployees}
+                  color="purple"
                   icon="fas fa-users"
                   trend="up"
                   trendValue="12"
                 />
-                <StatCard 
-                  title="Total Tasks" 
-                  value={isLoading ? "..." : stats.totalTasks} 
-                  color="blue" 
+                <StatCard
+                  title="Total Tasks"
+                  value={isLoading ? "..." : stats.totalTasks}
+                  color="blue"
                   icon="fas fa-tasks"
                   trend="up"
                   trendValue="8"
                 />
-                <StatCard 
-                  title="Pending Tasks" 
-                  value={isLoading ? "..." : stats.pendingTasks} 
-                  color="yellow" 
+                <StatCard
+                  title="Pending Tasks"
+                  value={isLoading ? "..." : stats.pendingTasks}
+                  color="yellow"
                   icon="fas fa-clock"
                   trend="down"
                   trendValue="5"
                 />
-                <StatCard 
-                  title="In Progress" 
-                  value={isLoading ? "..." : stats.inProgressTasks} 
-                  color="orange" 
+                <StatCard
+                  title="In Progress"
+                  value={isLoading ? "..." : stats.inProgressTasks}
+                  color="orange"
                   icon="fas fa-spinner"
                   trend="up"
                   trendValue="3"
                 />
-                <StatCard 
-                  title="Completed Tasks" 
-                  value={isLoading ? "..." : stats.completedTasks} 
-                  color="green" 
+                <StatCard
+                  title="Completed Tasks"
+                  value={isLoading ? "..." : stats.completedTasks}
+                  color="green"
                   icon="fas fa-check-circle"
                   trend="up"
                   trendValue="15"
                 />
-                <StatCard 
-                  title="Today's Reports" 
-                  value={isLoading ? "..." : stats.todayReports} 
-                  color="indigo" 
+                <StatCard
+                  title="Today's Reports"
+                  value={isLoading ? "..." : stats.todayReports}
+                  color="indigo"
                   icon="fas fa-file-alt"
                 />
               </div>
@@ -251,6 +252,11 @@ const ManagerDashboard = () => {
           {activeTab === 'reports' && (
             <div className="animate-slideUp">
               <EmployeeReports />
+            </div>
+          )}
+          {activeTab === 'employees' && (
+            <div className="animate-slideUp">
+              <EmployeeList />
             </div>
           )}
         </div>
