@@ -1,9 +1,10 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const cors = require('cors');
 const dotenv = require('dotenv');
 
 dotenv.config();
+
+const connectDB = require('./config/db');
 
 const app = express();
 
@@ -88,16 +89,7 @@ app.use((err, req, res, next) => {
 });
 
 // Connect to MongoDB
-mongoose
-  .connect(process.env.MONGODB_URI)
-  .then(() => {
-    console.log('MongoDB Connected Successfully');
-    console.log('MongoDB Database:', mongoose.connection.db.databaseName);
-  })
-  .catch((err) => {
-    console.error('MongoDB Connection Error:', err.message);
-    process.exit(1);
-  });
+connectDB();
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, '0.0.0.0', () => {
