@@ -1,3 +1,5 @@
+
+
 // import React, { useState, useEffect } from 'react';
 // import toast from 'react-hot-toast';
 // import { getTasks, updateTaskStatus } from '../../services/taskService';
@@ -76,7 +78,6 @@
 //     return (
 //       <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
 //         <div className="flex flex-col items-center justify-center space-y-4">
-//           {/* Animated Loader */}
 //           <div className="relative">
 //             <div className="w-16 h-16 border-4 border-gray-200 rounded-full"></div>
 //             <div className="absolute top-0 left-0 w-16 h-16 border-4 border-blue-500 rounded-full animate-spin border-t-transparent"></div>
@@ -85,7 +86,6 @@
 //             </div>
 //           </div>
           
-//           {/* Skeleton Cards */}
 //           <div className="w-full max-w-2xl space-y-4 mt-4">
 //             <div className="animate-pulse">
 //               <div className="bg-gray-100 rounded-xl p-4">
@@ -93,21 +93,6 @@
 //                   <div className="space-y-3 flex-1">
 //                     <div className="h-4 bg-gray-200 rounded w-3/4"></div>
 //                     <div className="h-3 bg-gray-200 rounded w-1/2"></div>
-//                     <div className="flex space-x-2">
-//                       <div className="h-6 bg-gray-200 rounded w-20"></div>
-//                       <div className="h-6 bg-gray-200 rounded w-24"></div>
-//                     </div>
-//                   </div>
-//                   <div className="h-8 bg-gray-200 rounded w-28"></div>
-//                 </div>
-//               </div>
-//             </div>
-//             <div className="animate-pulse">
-//               <div className="bg-gray-100 rounded-xl p-4">
-//                 <div className="flex justify-between">
-//                   <div className="space-y-3 flex-1">
-//                     <div className="h-4 bg-gray-200 rounded w-2/3"></div>
-//                     <div className="h-3 bg-gray-200 rounded w-1/3"></div>
 //                     <div className="flex space-x-2">
 //                       <div className="h-6 bg-gray-200 rounded w-20"></div>
 //                       <div className="h-6 bg-gray-200 rounded w-24"></div>
@@ -142,7 +127,6 @@
 //             </div>
 //           </div>
           
-//           {/* Task Stats */}
 //           <div className="flex gap-2 text-sm">
 //             <div className="bg-white px-3 py-1.5 rounded-lg shadow-sm">
 //               <span className="text-gray-500">Total:</span>
@@ -167,7 +151,6 @@
 //       {/* Search and Filter Bar */}
 //       <div className="px-6 py-4 bg-white border-b border-gray-100">
 //         <div className="flex flex-col sm:flex-row gap-3">
-//           {/* Search Input */}
 //           <div className="flex-1 relative">
 //             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
 //               <svg className="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -193,7 +176,6 @@
 //             )}
 //           </div>
 
-//           {/* Filter Dropdown */}
 //           <div className="relative">
 //             <select
 //               value={filter}
@@ -262,7 +244,7 @@
 //                       {task.description}
 //                     </p>
                     
-//                     {/* Meta Information */}
+//                     {/* Meta Information - Added Assigned By Manager */}
 //                     <div className="flex flex-wrap items-center gap-3 text-xs text-gray-500">
 //                       <div className="flex items-center gap-1">
 //                         <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -278,6 +260,15 @@
 //                           <span>Created: {format(new Date(task.createdAt), 'PPP')}</span>
 //                         </div>
 //                       )}
+//                       {/* NEW: Assigned By Manager */}
+//                       <div className="flex items-center gap-1 bg-blue-50 px-2 py-1 rounded-lg">
+//                         <svg className="w-3.5 h-3.5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+//                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+//                         </svg>
+//                         <span className="text-blue-700">
+//                           <span className="text-gray-500">Assigned by:</span> {task.assignedBy?.name || 'Unknown'}
+//                         </span>
+//                       </div>
 //                     </div>
 //                   </div>
                   
@@ -317,6 +308,8 @@
 
 // export default MyTasks;
 
+
+
 import React, { useState, useEffect } from 'react';
 import toast from 'react-hot-toast';
 import { getTasks, updateTaskStatus } from '../../services/taskService';
@@ -327,16 +320,36 @@ const MyTasks = () => {
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState('all');
   const [searchTerm, setSearchTerm] = useState('');
+  
+  // Pagination state
+  const [pagination, setPagination] = useState({
+    page: 1,
+    limit: 5,
+    total: 0,
+    pages: 0,
+    hasNext: false,
+    hasPrev: false
+  });
 
   useEffect(() => {
     fetchTasks();
-  }, []);
+  }, [filter, pagination.page]);
 
   const fetchTasks = async () => {
     try {
-      const response = await getTasks();
+      setLoading(true);
+      const response = await getTasks(pagination.page, pagination.limit, filter);
       if (response.success) {
         setTasks(response.data);
+        if (response.pagination) {
+          setPagination(prev => ({
+            ...prev,
+            total: response.pagination.total,
+            pages: response.pagination.pages,
+            hasNext: response.pagination.hasNext,
+            hasPrev: response.pagination.hasPrev
+          }));
+        }
       }
     } catch (error) {
       toast.error('Failed to fetch tasks');
@@ -355,6 +368,20 @@ const MyTasks = () => {
     } catch (error) {
       toast.error('Failed to update task status');
     }
+  };
+
+  const handlePageChange = (newPage) => {
+    setPagination(prev => ({ ...prev, page: newPage }));
+  };
+
+  const handleFilterChange = (newFilter) => {
+    setFilter(newFilter);
+    setPagination(prev => ({ ...prev, page: 1 }));
+  };
+
+  const handleSearchChange = (e) => {
+    setSearchTerm(e.target.value);
+    setPagination(prev => ({ ...prev, page: 1 }));
   };
 
   const getStatusColor = (status) => {
@@ -381,13 +408,12 @@ const MyTasks = () => {
     return new Date(deadline) < new Date();
   };
 
-  // Apply both filter and search
+  // Apply search filter locally (status filter is handled by API)
   const filteredTasks = tasks.filter(task => {
-    const matchesFilter = filter === 'all' || task.status === filter;
     const matchesSearch = searchTerm === '' || 
       task.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
       task.description.toLowerCase().includes(searchTerm.toLowerCase());
-    return matchesFilter && matchesSearch;
+    return matchesSearch;
   });
 
   // Loading Component
@@ -447,19 +473,15 @@ const MyTasks = () => {
           <div className="flex gap-2 text-sm">
             <div className="bg-white px-3 py-1.5 rounded-lg shadow-sm">
               <span className="text-gray-500">Total:</span>
-              <span className="ml-1 font-semibold text-gray-800">{tasks.length}</span>
+              <span className="ml-1 font-semibold text-gray-800">{pagination.total}</span>
             </div>
             <div className="bg-white px-3 py-1.5 rounded-lg shadow-sm">
-              <span className="text-gray-500">Completed:</span>
-              <span className="ml-1 font-semibold text-green-600">
-                {tasks.filter(t => t.status === 'completed').length}
-              </span>
+              <span className="text-gray-500">On Page:</span>
+              <span className="ml-1 font-semibold text-blue-600">{filteredTasks.length}</span>
             </div>
             <div className="bg-white px-3 py-1.5 rounded-lg shadow-sm">
-              <span className="text-gray-500">Pending:</span>
-              <span className="ml-1 font-semibold text-yellow-600">
-                {tasks.filter(t => t.status === 'pending' || t.status === 'in-progress').length}
-              </span>
+              <span className="text-gray-500">Page:</span>
+              <span className="ml-1 font-semibold text-gray-800">{pagination.page} / {pagination.pages}</span>
             </div>
           </div>
         </div>
@@ -478,12 +500,12 @@ const MyTasks = () => {
               type="text"
               placeholder="Search tasks by title or description..."
               value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
+              onChange={handleSearchChange}
               className="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
             />
             {searchTerm && (
               <button
-                onClick={() => setSearchTerm('')}
+                onClick={() => handleSearchChange({ target: { value: '' } })}
                 className="absolute inset-y-0 right-0 pr-3 flex items-center"
               >
                 <svg className="h-4 w-4 text-gray-400 hover:text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -496,7 +518,7 @@ const MyTasks = () => {
           <div className="relative">
             <select
               value={filter}
-              onChange={(e) => setFilter(e.target.value)}
+              onChange={(e) => handleFilterChange(e.target.value)}
               className="appearance-none pl-4 pr-10 py-2 border border-gray-200 rounded-xl cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white text-gray-700"
             >
               <option value="all">📋 All Tasks</option>
@@ -561,7 +583,7 @@ const MyTasks = () => {
                       {task.description}
                     </p>
                     
-                    {/* Meta Information - Added Assigned By Manager */}
+                    {/* Meta Information */}
                     <div className="flex flex-wrap items-center gap-3 text-xs text-gray-500">
                       <div className="flex items-center gap-1">
                         <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -577,7 +599,7 @@ const MyTasks = () => {
                           <span>Created: {format(new Date(task.createdAt), 'PPP')}</span>
                         </div>
                       )}
-                      {/* NEW: Assigned By Manager */}
+                      {/* Assigned By Manager */}
                       <div className="flex items-center gap-1 bg-blue-50 px-2 py-1 rounded-lg">
                         <svg className="w-3.5 h-3.5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
@@ -608,11 +630,61 @@ const MyTasks = () => {
           </div>
         )}
         
+        {/* Pagination Component */}
+        {pagination.pages > 1 && (
+          <div className="flex justify-center items-center gap-2 mt-6 pt-4 border-t border-gray-100">
+            <button
+              onClick={() => handlePageChange(pagination.page - 1)}
+              disabled={!pagination.hasPrev}
+              className="px-3 py-1 border rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50 transition"
+            >
+              <i className="fas fa-chevron-left"></i> Previous
+            </button>
+            
+            <div className="flex gap-1">
+              {[...Array(Math.min(5, pagination.pages))].map((_, i) => {
+                let pageNum;
+                if (pagination.pages <= 5) {
+                  pageNum = i + 1;
+                } else if (pagination.page <= 3) {
+                  pageNum = i + 1;
+                } else if (pagination.page >= pagination.pages - 2) {
+                  pageNum = pagination.pages - 4 + i;
+                } else {
+                  pageNum = pagination.page - 2 + i;
+                }
+                
+                return (
+                  <button
+                    key={pageNum}
+                    onClick={() => handlePageChange(pageNum)}
+                    className={`px-3 py-1 rounded-lg transition ${
+                      pagination.page === pageNum
+                        ? 'bg-blue-600 text-white'
+                        : 'border hover:bg-gray-50'
+                    }`}
+                  >
+                    {pageNum}
+                  </button>
+                );
+              })}
+            </div>
+            
+            <button
+              onClick={() => handlePageChange(pagination.page + 1)}
+              disabled={!pagination.hasNext}
+              className="px-3 py-1 border rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50 transition"
+            >
+              Next <i className="fas fa-chevron-right"></i>
+            </button>
+          </div>
+        )}
+        
         {/* Results Count */}
         {filteredTasks.length > 0 && (
           <div className="mt-4 pt-3 border-t border-gray-100 text-center">
             <p className="text-xs text-gray-400">
-              Showing {filteredTasks.length} of {tasks.length} tasks
+              Showing {filteredTasks.length} of {pagination.total} tasks
               {searchTerm && ` matching "${searchTerm}"`}
               {filter !== 'all' && ` • Filtered by: ${filter}`}
             </p>

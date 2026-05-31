@@ -44,22 +44,78 @@ const createTask = async (req, res) => {
 // @desc    Get all tasks (Manager: all tasks, Employee: their tasks)
 // @route   GET /api/tasks
 // @access  Private
+// const getTasks = async (req, res) => {
+//   try {
+//     let query;
+    
+//     if (req.user.role === 'manager') {
+//       query = Task.find().populate('assignedTo', 'name email').populate('assignedBy', 'name email');
+//     } else {
+//       query = Task.find({ assignedTo: req.user.id }).populate('assignedBy', 'name email');
+//     }
+
+//     const tasks = await query.sort('-createdAt');
+    
+//     res.status(200).json({
+//       success: true,
+//       count: tasks.length,
+//       data: tasks,
+//     });
+//   } catch (error) {
+//     res.status(500).json({
+//       success: false,
+//       message: error.message,
+//     });
+//   }
+// };
+
 const getTasks = async (req, res) => {
   try {
+    // Pagination parameters
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 5;
+    const skip = (page - 1) * limit;
+    
+    // Status filter
+    const statusFilter = req.query.status;
+    
     let query;
     
     if (req.user.role === 'manager') {
-      query = Task.find().populate('assignedTo', 'name email').populate('assignedBy', 'name email');
+      query = Task.find();
+      if (statusFilter && statusFilter !== 'all') {
+        query = query.where('status').equals(statusFilter);
+      }
     } else {
-      query = Task.find({ assignedTo: req.user.id }).populate('assignedBy', 'name email');
+      query = Task.find({ assignedTo: req.user.id });
+      if (statusFilter && statusFilter !== 'all') {
+        query = query.where('status').equals(statusFilter);
+      }
     }
-
-    const tasks = await query.sort('-createdAt');
+    
+    // Get total count for pagination
+    const total = await query.clone().countDocuments();
+    
+    // Get paginated results
+    const tasks = await query
+      .populate('assignedTo', 'name email')
+      .populate('assignedBy', 'name email')
+      .sort('-createdAt')
+      .skip(skip)
+      .limit(limit);
     
     res.status(200).json({
       success: true,
       count: tasks.length,
       data: tasks,
+      pagination: {
+        page,
+        limit,
+        total,
+        pages: Math.ceil(total / limit),
+        hasNext: page < Math.ceil(total / limit),
+        hasPrev: page > 1
+      }
     });
   } catch (error) {
     res.status(500).json({
