@@ -109,30 +109,29 @@ const MyTasks = () => {
     return (
       <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
         <div className="flex flex-col items-center justify-center space-y-4">
-          <div className="relative">
+          {/* <div className="relative">
             <div className="w-16 h-16 border-4 border-gray-200 rounded-full"></div>
             <div className="absolute top-0 left-0 w-16 h-16 border-4 border-blue-500 rounded-full animate-spin border-t-transparent"></div>
             <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
               <div className="w-6 h-6 bg-blue-500 rounded-full animate-pulse"></div>
             </div>
-          </div>
+          </div> */}
           
-          <div className="w-full max-w-2xl space-y-4 mt-4">
-            <div className="animate-pulse">
-              <div className="bg-gray-100 rounded-xl p-4">
-                <div className="flex justify-between">
-                  <div className="space-y-3 flex-1">
-                    <div className="h-4 bg-gray-200 rounded w-3/4"></div>
-                    <div className="h-3 bg-gray-200 rounded w-1/2"></div>
-                    <div className="flex space-x-2">
-                      <div className="h-6 bg-gray-200 rounded w-20"></div>
-                      <div className="h-6 bg-gray-200 rounded w-24"></div>
-                    </div>
+           <div className="w-full max-w-2xl space-y-4 mt-4">
+            {[1, 2, 3].map((i) => (
+              <div key={i} className="animate-pulse">
+                <div className="bg-gray-100 rounded-xl p-4">
+                  <div className="flex justify-between mb-3">
+                    <div className="h-4 bg-gray-200 rounded w-32"></div>
+                    <div className="h-3 bg-gray-200 rounded w-20"></div>
                   </div>
-                  <div className="h-8 bg-gray-200 rounded w-28"></div>
+                  <div className="space-y-2">
+                    <div className="h-3 bg-gray-200 rounded w-full"></div>
+                    <div className="h-3 bg-gray-200 rounded w-3/4"></div>
+                  </div>
                 </div>
               </div>
-            </div>
+            ))}
           </div>
           
           <p className="text-gray-500 text-sm animate-pulse">Loading your tasks...</p>
